@@ -8,7 +8,7 @@ function App() {
   const possibleValues = ["A", "B", "C"];
 
   const spinSlots = () => {
-    if (!spinning) {
+    if (!spinning && points > 0) {
       setSpinning(true);
       setTimeout(() => {
         const newValues = possibleValues.map(() => {
@@ -37,7 +37,7 @@ function App() {
           onClick={spinSlots}
           disabled={spinning}
         >
-          {spinning ? "Spinning..." : "Spin"}
+          {spinning ? "Spinning..." : "Spin" || points === 0}
         </button>
         <div className="text-3xl font-semibold text-center text-gray-400">
           Points: {points}
