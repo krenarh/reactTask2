@@ -4,6 +4,7 @@ import Slot from "./components/Slot";
 function App() {
   const [spinning, setSpinning] = useState(false);
   const [slotValues, setSlotValues] = useState(["O", "O", "O"]);
+  const [points, setPoints] = useState(10);
   const possibleValues = ["A", "B", "C"];
 
   const spinSlots = () => {
@@ -16,7 +17,11 @@ function App() {
         });
         setSlotValues(newValues);
         setSpinning(false);
+        if (newValues.every((val) => val === newValues[0])) {
+          setPoints(points + 9);
+        }
       }, 2000);
+      setPoints(points - 1);
     }
   };
   return (
@@ -34,6 +39,9 @@ function App() {
         >
           {spinning ? "Spinning..." : "Spin"}
         </button>
+        <div className="text-3xl font-semibold text-center text-gray-400">
+          Points: {points}
+        </div>
       </div>
     </div>
   );
