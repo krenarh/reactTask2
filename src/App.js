@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Slot from "./components/Slot";
 
 function App() {
@@ -6,6 +6,7 @@ function App() {
   const [slotValues, setSlotValues] = useState(["O", "O", "O"]);
   const [points, setPoints] = useState(10);
   const possibleValues = ["A", "B", "C"];
+  const enterPoints = useRef();
 
   const spinSlots = () => {
     if (!spinning && points > 0) {
@@ -18,10 +19,18 @@ function App() {
         setSlotValues(newValues);
         setSpinning(false);
         if (newValues.every((val) => val === newValues[0])) {
-          setPoints(points + 9);
+          setPoints(
+            1 < enterPoints.current.value <= points
+              ? enterPoints.current.value * 9
+              : points + 9
+          );
         }
+        setPoints(
+          1 < enterPoints.current.value <= points
+            ? points - enterPoints.current.value
+            : points - 1
+        );
       }, 2000);
-      setPoints(points - 1);
     }
   };
   return (
@@ -42,6 +51,7 @@ function App() {
         <div className="text-3xl font-semibold text-center text-gray-400">
           Points: {points}
         </div>
+        <input type="number" max={points} defaultValue={1} ref={enterPoints} />
       </div>
     </div>
   );
