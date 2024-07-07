@@ -9,6 +9,16 @@ function App() {
   const enterPoints = useRef();
 
   const spinSlots = () => {
+    const enteredPoints = parseInt(enterPoints.current.value, 10) || 1;
+    if (enteredPoints > points) {
+      alert("You cannot bet more points that you currently have!");
+      return;
+    }
+    if (enteredPoints < 0) {
+      alert("You cannot bet negative points");
+      return;
+    }
+
     if (!spinning && points > 0) {
       setSpinning(true);
       setTimeout(() => {
@@ -18,21 +28,17 @@ function App() {
         });
         setSlotValues(newValues);
         setSpinning(false);
+
         if (newValues.every((val) => val === newValues[0])) {
-          setPoints(
-            1 < enterPoints.current.value <= points
-              ? enterPoints.current.value * 9
-              : points + 9
-          );
+          const newPoints = enteredPoints * 9;
+          setPoints(points + newPoints - enteredPoints);
+        } else {
+          setPoints(points - enteredPoints);
         }
-        setPoints(
-          1 < enterPoints.current.value <= points
-            ? points - enterPoints.current.value
-            : points - 1
-        );
       }, 2000);
     }
   };
+
   return (
     <div>
       <div className="flex justify-center">
@@ -56,4 +62,5 @@ function App() {
     </div>
   );
 }
+
 export default App;
